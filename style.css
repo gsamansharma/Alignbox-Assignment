@@ -1,0 +1,23 @@
+body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chat-bubble-sent {
+            background-color: #D90429;
+            color: white;
+            border-radius: 20px 20px 4px 20px;
+        }
+        .chat-bubble-received {
+            background-color: #EDF2F4;
+            color: #2B2D42;
+            border-radius: 20px 20px 20px 4px;
+        }
+        .chat-bubble-sent-anon {
+            background-color: #8D99AE;
+            color: white;
+            border-radius: 20px 20px 4px 20px;
+        }
+        .chat-bubble-received-anon {
+            background-color: #EDF2F4;
+            color: #2B2D42;
+            border-radius: 20px 20px 20px 4px;
+        }

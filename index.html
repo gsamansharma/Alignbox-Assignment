@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alignbox Chat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100">
+    
+    <button id="toggle-controls-btn" class="sm:hidden fixed top-4 left-4 z-30 bg-white p-2 rounded-full shadow-md">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+    </button>
+    
+    <div id="overlay" class="sm:hidden fixed inset-0 bg-black bg-opacity-50 z-10 hidden"></div>
+
+    <div class="flex w-screen h-screen">
+        <div id="controls-panel" class="w-64 bg-white p-4 h-full flex-shrink-0 fixed top-0 left-0 z-20 transition-transform duration-300 ease-in-out transform -translate-x-full sm:relative sm:translate-x-0 sm:z-auto">
+            <h2 class="text-lg font-semibold mb-4 text-center text-gray-700">Testing Controls</h2>
+            <div class="mb-4">
+                <label for="user-id-input" class="block text-sm font-medium text-gray-700">Current User ID</label>
+                <input type="number" id="user-id-input" value="1" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
+            </div>
+            <div class="mb-4">
+                <label for="group-id-input" class="block text-sm font-medium text-gray-700">Group ID</label>
+                <input type="number" id="group-id-input" value="1" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm">
+            </div>
+
+            <hr class="my-4">
+
+            <form id="add-member-form">
+                <h3 class="text-md font-semibold mb-2 text-center text-gray-700">Add Member to Group</h3>
+                <div class="mb-2">
+                    <label for="new-user-id-input" class="block text-sm font-medium text-gray-700">User ID to Add</label>
+                    <input type="number" id="new-user-id-input" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm" placeholder="e.g., 2">
+                </div>
+                <div class="mb-3">
+                    <label for="role-select" class="block text-sm font-medium text-gray-700">Role</label>
+                    <select id="role-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-red-500 focus:border-red-500 sm:text-sm rounded-md">
+                        <option>MEMBER</option>
+                        <option>ADMIN</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-red-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    Add Member
+                </button>
+            </form>
+        </div>
+
+        <div class="flex-grow h-full bg-white flex flex-col border-l border-gray-200">
+            <header class="bg-white p-4 flex items-center justify-between border-b border-gray-200 sticky top-0 z-10 flex-shrink-0">
+                <button class="text-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                </button>
+                <div class="flex items-center">
+                    <img class="w-10 h-10 rounded-full mr-3" src="https://placehold.co/100x100/D90429/FFFFFF?text=FF" alt="Group Avatar">
+                    <h1 id="group-name" class="text-lg font-semibold text-gray-800">Fun Friday Group</h1>
+                </div>
+                <button id="toggle-anonymous" class="text-red-500 p-2 border-red-500 border-2 rounded-full">
+                   <svg class="h-7 w-7" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 15.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm9 0a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
+                        <path d="m10 15 .211-.106a4 4 0 0 1 3.578 0L14 15m3-6-1.65-4.125a1 1 0 0 0-1.245-.577l-1.473.491a2 2 0 0 1-1.264 0L9.894 4.3a1 1 0 0 0-1.245.576L7 9m-4 1c7.5-1 11-1 18 0"/>
+                    </svg>
+                </button>
+            </header>
+
+            <main id="messages-container" class="flex-1 p-4 overflow-y-auto bg-gray-50">
+            </main>
+            
+            <div id="anonymous-banner" class="hidden p-2 bg-yellow-100 text-center text-sm text-yellow-800 border-t border-gray-200">
+                 Now you're appearing as Anonymous! 🎭
+            </div>
+
+            <footer class="bg-white p-3 border-t border-gray-200 sticky bottom-0 flex-shrink-0">
+                <form id="message-form" class="flex items-center">
+                    <input type="text" id="message-input" placeholder="Type a message ..." class="flex-1 bg-gray-100 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+                    <button type="button" class="ml-3 text-gray-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                        </svg>
+                    </button>
+                    <button type="button" class="ml-3 text-gray-500">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </button>
+                    <button type="submit" class="ml-3 bg-red-600 text-white p-2 rounded-full w-10 h-10 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </form>
+            </footer>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
+
